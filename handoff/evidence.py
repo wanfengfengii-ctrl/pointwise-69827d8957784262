@@ -15,18 +15,22 @@ class EvidenceRow:
 
 def freeze_evidence(manifest: PackageManifest):
     rows = []
-    positions = manifest.layout.positions
     for stripe in manifest.stripes:
+        # Each stripe interprets its own local slots through its private
+        # slot map. Indexing the recording layout here would misplace
+        # evidence whenever a stripe reorders or subsets the layout.
         for observation in stripe.observations:
             slot = observation.slot
+            position = stripe.slot_map.resolve(slot)
             rows.append(EvidenceRow(
                 observation.evidence_id, stripe.stripe_id, "direct",
-                (slot,), (positions[slot],), observation.value,
+                (slot,), (position,), observation.value,
             ))
         for parity in stripe.parities:
             slots = tuple(parity.slots)
+            positions = tuple(stripe.slot_map.resolve(slot) for slot in slots)
             rows.append(EvidenceRow(
                 parity.evidence_id, stripe.stripe_id, "parity",
-                slots, tuple(positions[slot] for slot in slots), parity.value,
+                slots, positions, parity.value,
             ))
     return tuple(rows)
