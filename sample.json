@@ -1,0 +1,19 @@
+{
+  "recording_id": "R-BRIDGE-001",
+  "positions": ["a", "b", "c"],
+  "stripes": [
+    {
+      "stripe_id": "P",
+      "mapping": ["a", "b", "c"],
+      "direct": [],
+      "parity": [{"evidence_id": "P", "slots": [0, 1, 2], "value": 1}]
+    },
+    {
+      "stripe_id": "Q",
+      "mapping": ["c", "b"],
+      "direct": [],
+      "parity": [{"evidence_id": "Q", "slots": [0, 1], "value": 0}]
+    }
+  ],
+  "request": ["c", "a", "b"]
+}
